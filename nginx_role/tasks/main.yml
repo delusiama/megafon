@@ -1,0 +1,11 @@
+- name: "Устновка nginx"
+  include_tasks: nginx_setup.yml
+  when: nginx_setup | default(true)
+
+- name: "Настройка nginx"
+  include_tasks: configure_nginx.yml
+  when: configure_nginx | default(true)
+
+- name: "Тестирование nginx"
+  include_tasks: nginx_test.yml
+  when: nginx_test | default(true)

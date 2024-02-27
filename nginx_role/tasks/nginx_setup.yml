@@ -1,0 +1,28 @@
+    - name: Pull the latest NGINX image
+      docker_image:
+        name: nginx
+        state: present
+        source: pull
+
+    - name: Create NGINX container
+      docker_container:
+        name: "{{ nginx_container_name }}"
+        image: "{{ nginx_image }}"
+        state: started
+        ports:
+          - "80:80"
+        volumes:
+          - "/root/lab/ansible/megafon_test/nginx_role/templates/:/etc/nginx/"
+          - "/root/lab/ansible/megafon_test/nginx_role/templates/host1:/usr/share/nginx/host1/"
+          - "/root/lab/ansible/megafon_test/nginx_role/templates/host2:/usr/share/nginx/host2/"
+        restart_policy: always
+      register: container_info
+
+    - name: Проверка HTTP-запросов к хостам
+      uri:
+        url: http://"{{ item }}"
+        method: GET
+        return_content: yes
+      register: http_result
+      loop: "{{ nginx_vhosts }}"
+      ignore_errors: yes

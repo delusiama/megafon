@@ -1,0 +1,11 @@
+- name: Deploy and Configure NGINX
+  hosts: localhost
+  become: yes
+  vars:
+    nginx_setup: true
+    configure_nginx: true
+    nginx_test: true
+  tasks:
+    - name: Include NGINX Role
+      include_role:
+        name: nginx_role
