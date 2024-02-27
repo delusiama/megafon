@@ -1,10 +1,10 @@
-- name: Configure NGINX
+- name: Изменение конфигурации Nginx
   template:
-    src: "{{ nginx_config_path }}"
+    src: "/root/lab/ansible/megafon_test/nginx.conf"
     dest: "/root/lab/ansible/megafon_test/nginx_role/templates/nginx.conf"
   when: configure_nginx | default(true)
 
-- name: Reload NGINX configuration
+- name: Обновление конфигурации Nginx
   command: docker exec "{{ nginx_container_name }}" nginx -s reload
   when: configure_nginx | default(true)
 

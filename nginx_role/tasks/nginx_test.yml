@@ -5,11 +5,13 @@
     timeout: 10
     validate_certs: no
     method: GET
+    use_proxy: no
   register: http_result
   ignore_errors: true
   loop: "{{ nginx_vhosts }}"
 
 - name: Вывод об ошибке, если статус не 200
   fail:
-    msg: "Ошибка доступности HTTP на {{ nginx_vhosts }}, статус: {{ http_result.status }}"
+    msg: "Ошибка доступности HTTP на {{ item }}, статус: {{ http_result.status }}"
+  loop: "{{ nginx_vhosts }}"
   when: http_result.status is defined and http_result.status != 200
